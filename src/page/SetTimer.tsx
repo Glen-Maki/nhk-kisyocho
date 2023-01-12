@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 type Inputs = {
@@ -6,6 +7,8 @@ type Inputs = {
 };
 
 export const SetTimer = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [message, setMessage] = useState<string | undefined>(undefined);
   const { register, handleSubmit } = useForm<Inputs>({
     defaultValues: { hour: null, minutes: null },
   });
@@ -18,21 +21,31 @@ export const SetTimer = () => {
   const url = "";
 
   const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
+    setIsLoading(true);
     // console.log(`submit: ${data.hour} 時 ${data.minutes} 分`);
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ hour: data.hour, minutes: data.minutes }),
     };
-
-    fetch(url, requestOptions);
+    fetch(url, requestOptions)
+      .then(() => {
+        setMessage(`${data.hour}時${data.minutes}分に設定しました！`);
+      })
+      .catch((e) => {
+        setMessage("送信に失敗しました");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex h-full w-full flex-col items-center justify-center gap-4  "
+      className="flex h-full w-full flex-col items-center gap-4"
     >
+      <div className=" p-4 text-2xl">NHK 起床庁</div>
       <div className="flex gap-4">
         <select
           {...register("hour")}
@@ -51,7 +64,7 @@ export const SetTimer = () => {
         <select
           {...register("minutes")}
           required
-          className="rounded-md	bg-violet-100/90  px-3 py-1"
+          className="rounded-md	bg-violet-100/90  px-3 py-1 "
         >
           {minutes.map((minutes) => {
             return (
@@ -63,9 +76,14 @@ export const SetTimer = () => {
         </select>
         分
       </div>
-      <div className="rounded-md	bg-violet-100/90 px-3 py-1">
-        <input type="submit" />
-      </div>
+      <button
+        type="submit"
+        className="rounded-md	bg-violet-100/90 px-3 py-1 hover:bg-violet-200 active:border-solid disabled:bg-slate-400"
+        disabled={isLoading}
+      >
+        {isLoading ? "送信中" : "送信する"}
+      </button>
+      <div className=" p-4">{message}</div>
     </form>
   );
 };
