@@ -18,7 +18,7 @@ export const SetTimer = () => {
   const minutes = [0, 15, 30, 45];
 
   // FIXME:url追記
-  const url = "http://192.168.11.59:8080/setting";
+  const url = "";
 
   const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
     setIsLoading(true);
