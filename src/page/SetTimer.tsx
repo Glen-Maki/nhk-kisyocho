@@ -18,15 +18,18 @@ export const SetTimer = () => {
   const minutes = [0, 15, 30, 45];
 
   // FIXME:url追記
-  const url = "";
+  const url = "http://192.168.11.59:8080/setting";
 
   const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
     setIsLoading(true);
-    // console.log(`submit: ${data.hour} 時 ${data.minutes} 分`);
+    console.log(JSON.stringify({ hour: data.hour, minutes: data.minutes }));
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ hour: data.hour, minutes: data.minutes }),
+      body: JSON.stringify({
+        hour: Number(data.hour),
+        minutes: Number(data.minutes),
+      }),
     };
     fetch(url, requestOptions)
       .then(() => {
