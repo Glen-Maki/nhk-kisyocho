@@ -1,16 +1,38 @@
-import {ReactNode} from "react";
-import {BrowserRouter, Route} from 'react-router-dom';
-import {SetTimer} from "../page/SetTimer";
-import {StopTimer} from "../page/StopTimer";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Layout } from "../Components/Layout";
+import { Home } from "../page/Home";
+import { SetTimer } from "../page/SetTimer";
+import { StopTimer } from "../page/StopTimer";
 
-export const AppRouter = ({children}: {
-    children: ReactNode
-}) => {
-    return (
-        <BrowserRouter>
-            {children}
-            <Route path={'setting'} element={<SetTimer/>}/>
-            <Route path={'stop-timer'} element={<StopTimer/>}/>
-        </BrowserRouter>
-    )
-}
+export const AppRouter = () => {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route
+          index
+          element={
+            <Layout>
+              <Home />
+            </Layout>
+          }
+        />
+        <Route
+          path={"setting"}
+          element={
+            <Layout>
+              <SetTimer />
+            </Layout>
+          }
+        />
+        <Route
+          path={"stop-timer"}
+          element={
+            <Layout>
+              <StopTimer />
+            </Layout>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
+  );
+};
