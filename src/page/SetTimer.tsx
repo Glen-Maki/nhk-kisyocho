@@ -13,16 +13,19 @@ export const SetTimer = () => {
     defaultValues: { hour: null, minutes: null },
   });
 
-  const hours = [...Array(24)].map((_, i) => i + 1);
+  const hours = [...Array(24)].map((_, i) => i);
 
+  // 必要に応じて変更
   const minutes = [0, 15, 30, 45];
 
-  // FIXME:url追記
-  const url = "";
+  const testUrl = "";
+  const url = "http://192.168.11.59:8080";
 
   const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
     setIsLoading(true);
     console.log(JSON.stringify({ hour: data.hour, minutes: data.minutes }));
+
+    // requestの設定
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -31,7 +34,9 @@ export const SetTimer = () => {
         minutes: Number(data.minutes),
       }),
     };
-    fetch(url, requestOptions)
+
+    // 送信の処理
+    fetch(testUrl + "/setting", requestOptions)
       .then(() => {
         setMessage(`${data.hour}時${data.minutes}分に設定しました！`);
       })
@@ -48,8 +53,7 @@ export const SetTimer = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex h-full w-full flex-col items-center gap-4"
     >
-      <div className=" p-4 text-2xl">NHK 起床庁</div>
-      <div className="flex gap-4">
+      <div className="mt-5 flex gap-4">
         <select
           {...register("hour")}
           required
@@ -80,7 +84,7 @@ export const SetTimer = () => {
         分
       </div>
       <button
-        type="submit"
+        type="button"
         className="rounded-md	bg-violet-100/90 px-3 py-1 hover:bg-violet-200 active:border-solid disabled:bg-slate-400"
         disabled={isLoading}
       >
