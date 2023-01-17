@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import config from "../config";
 
 export const StopTimer = () => {
   const [text, setText] = useState("");
@@ -6,24 +7,27 @@ export const StopTimer = () => {
   const [message, setMessage] = useState<string | undefined>(undefined);
   const [password, setPassword] = useState<string | undefined>(undefined);
 
-  const testUrl = "";
-  const url = "http://192.168.11.59:8080";
+  const url = config.URL;
 
   useEffect(() => {
-    fetch(testUrl + "/setting")
+    fetch(url + "/stop")
       .then((res) => {
-        // return res.json();
+        if (!res?.ok) {
+          setMessage("サーバーエラーです");
+        }
+        return res.text();
       })
       .then((res) => {
-        setPassword(`${"test"}`);
+        // console.log(res);
+        setPassword(res);
       })
       .catch((e) => {
-        setMessage("送信に失敗しました");
+        setMessage("受信に失敗しました");
       })
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [url]);
 
   const onButton = () => {
     // 止める処理
@@ -32,16 +36,19 @@ export const StopTimer = () => {
 
     const requestOptions = {
       method: "POST",
-      // headers: { "Content-Type": "application/json" },
-      body: text,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        word: text,
+      }),
     };
 
-    fetch(testUrl + "/setting", requestOptions)
+    fetch(url + "/stop", requestOptions)
       .then((res) => {
-        // return res.json();
+        return res.text();
       })
       .then((res) => {
-        setMessage(`${res}`);
+        alert(res);
+        setMessage(res);
       })
       .catch((e) => {
         setMessage("送信に失敗しました");
@@ -51,9 +58,26 @@ export const StopTimer = () => {
       });
   };
 
+  const preventCopy = (e: React.ClipboardEvent<HTMLDivElement>) => {
+    alert("コピー禁止です");
+    e.preventDefault();
+    e.nativeEvent.stopImmediatePropagation();
+  };
+
   return (
     <form className="mt-5 flex h-full w-full flex-col items-center gap-4 ">
-      {password ? <div className="text-lg">{password}</div> : <></>}
+      {password ? (
+        <div
+          onCopy={(e) => {
+            preventCopy(e);
+          }}
+          className="text-lg"
+        >
+          {password}
+        </div>
+      ) : (
+        <></>
+      )}
       <input
         type="text"
         placeholder="パスワードを入力する"
@@ -68,7 +92,7 @@ export const StopTimer = () => {
       >
         {isLoading ? "送信中" : "送信する"}{" "}
       </button>
-      {message}
+      <div className="text-lg">{message}</div>
     </form>
   );
 };
