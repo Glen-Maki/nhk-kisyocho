@@ -6,7 +6,7 @@ export const Home = () => {
   const [message, setMessage] = useState<string | undefined>(undefined);
   const [tableValue, setTableValue] = useState<string[] | undefined>(undefined);
 
-  const [onDelete, setOnDelete] = useState<number>(0);
+  const [onDelete, setOnDelete] = useState<boolean>(false);
 
   const url = config.URL;
 
@@ -55,8 +55,7 @@ export const Home = () => {
       })
       .finally(() => {
         setIsLoading(false);
-        // FIXME: 非効率的
-        setOnDelete((e) => e + 1);
+        setOnDelete(!onDelete);
       });
   };
 
