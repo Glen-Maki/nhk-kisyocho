@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import config from "../config";
 
 type Inputs = {
   hour: number | null;
@@ -16,10 +17,9 @@ export const SetTimer = () => {
   const hours = [...Array(24)].map((_, i) => i);
 
   // 必要に応じて変更
-  const minutes = [0, 15, 30, 45];
+  const minutes = [...Array(60)].map((_, i) => i);
 
-  const testUrl = "";
-  const url = "http://192.168.11.59:8080";
+  const url = config.URL;
 
   const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
     setIsLoading(true);
@@ -31,13 +31,16 @@ export const SetTimer = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         hour: Number(data.hour),
-        minutes: Number(data.minutes),
+        minute: Number(data.minutes),
       }),
     };
 
     // 送信の処理
-    fetch(testUrl + "/setting", requestOptions)
-      .then(() => {
+    fetch(url + "/setting", requestOptions)
+      .then((res) => {
+        if (!res?.ok) {
+          setMessage("サーバーエラーです");
+        }
         setMessage(`${data.hour}時${data.minutes}分に設定しました！`);
       })
       .catch((e) => {
@@ -84,7 +87,7 @@ export const SetTimer = () => {
         分
       </div>
       <button
-        type="button"
+        type="submit"
         className="rounded-md	bg-violet-100/90 px-3 py-1 hover:bg-violet-200 active:border-solid disabled:bg-slate-400"
         disabled={isLoading}
       >
