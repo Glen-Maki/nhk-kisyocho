@@ -1,12 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const StopTimer = () => {
   const [text, setText] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string | undefined>(undefined);
+  const [password, setPassword] = useState<string | undefined>(undefined);
 
   const testUrl = "";
   const url = "http://192.168.11.59:8080";
+
+  useEffect(() => {
+    fetch(testUrl + "/setting")
+      .then((res) => {
+        // return res.json();
+      })
+      .then((res) => {
+        setPassword(`${"test"}`);
+      })
+      .catch((e) => {
+        setMessage("送信に失敗しました");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
 
   const onButton = () => {
     // 止める処理
@@ -33,8 +50,10 @@ export const StopTimer = () => {
         setIsLoading(false);
       });
   };
+
   return (
-    <form className="mt-5 flex h-full w-full flex-col items-center gap-4">
+    <form className="mt-5 flex h-full w-full flex-col items-center gap-4 ">
+      {password ? <div className="text-lg">{password}</div> : <></>}
       <input
         type="text"
         placeholder="パスワードを入力する"
