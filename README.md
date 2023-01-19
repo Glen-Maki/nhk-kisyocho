@@ -2,10 +2,9 @@
 
 このレポジトリは情報科学総合演習Ｂの最終課題のフロントエンド側のレポジトリです。
 
-ローカルで立ち上げて、APIサーバーに接続し、APIサーバーからESP32というマイコンへhttpリクエストを出す構成になっています。
+ローカル環境内で、API サーバーに接続し、その API サーバーを通して ESP32 というマイコンを操作する構成になっています。
 
-なお、ESP32では目覚まし時計のような運用を想定しています。
-
+なお、ESP32 では目覚まし時計のような運用を想定しています。
 
 ## Available Scripts
 
@@ -43,6 +42,3 @@ If you aren’t satisfied with the build tool and configuration choices, you can
 Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
