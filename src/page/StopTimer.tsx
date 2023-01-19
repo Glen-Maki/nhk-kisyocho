@@ -10,7 +10,7 @@ export const StopTimer = () => {
   const url = config.URL;
 
   useEffect(() => {
-    fetch(url + "/stop")
+    fetch(url + "/get_phrase")
       .then((res) => {
         if (!res?.ok) {
           setMessage("サーバーエラーです");
