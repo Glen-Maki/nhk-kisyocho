@@ -1,6 +1,11 @@
-# Getting Started with Create React App
+# NHK-Kisyocho
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+このレポジトリは情報科学総合演習Ｂの最終課題のフロントエンド側のレポジトリです。
+
+ローカルで立ち上げて、APIサーバーに接続し、APIサーバーからESP32へhttpリクエストを出す構成になっています。
+
+
+
 
 ## Available Scripts
 
@@ -41,6 +46,3 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 ## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
